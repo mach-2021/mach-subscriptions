@@ -1,0 +1,29 @@
+steps:
+  - id: 'Pull code from repository'
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        git clone -b $BRANCH_NAME git@github.com:dawn-foods-digital/$REPO_NAME
+        cd $REPO_NAME
+        git submodule init
+        git submodule update
+        echo $(date +"%Y.%m.%d").$(git rev-list --count $BRANCH_NAME).$(git log --oneline -1 | awk -F/ '{ if ($2=="") print "master"; else print $2;}') > /workspace/IMAGE_VERSION
+        cat /workspace/IMAGE_VERSION
+  - id: 'Build image'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker build -f cloudbuild/Dockerfile -t gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION) .
+  - id: 'Push image'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        docker push gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION)
+options:
+  machineType: 'N1_HIGHCPU_8'

@@ -1,0 +1,43 @@
+server:
+  port: ${SUBSCRIPTION_SERVER_PORT:8082}
+
+management:
+  endpoints:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: bff
+    export:
+      prometheus:
+        enabled: true
+    stackdriver:
+      enabled: true
+      step: 1m
+  health:
+    probes:
+      enabled: true
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: "readinessState,ping"
+        liveness:
+          include: "livenessState,ping"
+
+logging:
+  level:
+    root: ${ROOT_LOG_LEVEL:INFO}
+  pattern:
+    console: '%-5p|%d{ISO8601}{GMT}|%X{Slf4jMDCFilter.UUID}|%c|%m%ex%n'
+
+spring:
+  cloud:
+    gcp:
+      credentials:
+        location: ${SPRING_CLOUD_GCP_CREDENTIAL_PATH:file:first.json}

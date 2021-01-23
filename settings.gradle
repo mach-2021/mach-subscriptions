@@ -1,0 +1,3 @@
+rootProject.name = 'mach-subscriptions'
+include 'subscriptions'
+include 'core'
