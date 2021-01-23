@@ -7,5 +7,7 @@ steps:
       - '-c'
       - |
         ls -l
+        git status
+        git submodule init
 options:
   machineType: 'N1_HIGHCPU_8'

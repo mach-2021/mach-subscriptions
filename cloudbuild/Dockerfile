@@ -1,6 +1,6 @@
 FROM gradle:6.7.0-jdk11 as builder
 WORKDIR /home/gradle/project
-COPY . .
+COPY mach-subscriptions/. .
 RUN ls -l
 RUN gradle --parallel --build-cache --no-daemon bootJar
 
