@@ -7,7 +7,9 @@ steps:
       - '-c'
       - |
         ls -l
-        git status
         git submodule init
+        git submodule update
+        echo $(date +"%Y.%m.%d").$(git rev-list --count main).$(git log --oneline -1 | awk -F/ '{ if ($2=="") print "main"; else print $2;}') > /workspace/IMAGE_VERSION
+        cat /workspace/IMAGE_VERSION
 options:
   machineType: 'N1_HIGHCPU_8'
