@@ -1,52 +1,11 @@
 # Access the id_github file from Secret Manager
 steps:
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: 'bash'
-    args: [ '-c', 'gcloud secrets versions access latest --secret=secret-name > /root/.ssh/id_github' ]
-    volumes:
-      - name: 'ssh'
-        path: /root/.ssh
-
-  # Set up git with key and domain
-  - name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        chmod 600 /root/.ssh/id_github
-        cat <<EOF >/root/.ssh/config
-        Hostname github.com
-        IdentityFile /root/.ssh/id_github
-        EOF
-        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-    volumes:
-      - name: 'ssh'
-        path: /root/.ssh
-  - id: 'Pull code from repository'
-    name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        git clone -b $BRANCH_NAME git@github.com:mach-2021/$REPO_NAME
-        cd $REPO_NAME
-        git submodule init
-        git submodule update
-        echo $(date +"%Y.%m.%d").$(git rev-list --count $BRANCH_NAME).$(git log --oneline -1 | awk -F/ '{ if ($2=="") print "main"; else print $2;}') > /workspace/IMAGE_VERSION
-        cat /workspace/IMAGE_VERSION
-  - id: 'Build image'
+  - id: 'Build image pr'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        docker build -f cloudbuild/Dockerfile -t gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION) .
-  - id: 'Push image'
-    name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        docker push gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION)
+        ls -l
 options:
   machineType: 'N1_HIGHCPU_8'
