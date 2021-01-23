@@ -10,4 +10,3 @@ RUN adduser -D appuser
 USER appuser
 WORKDIR /home/appuser
 COPY --from=builder --chown=101:101 /home/gradle/project/subscriptions/build/libs/*.jar /home/appuser/app.jar
-COPY --from=builder /home/gradle/project/dd-java-agent.jar /home/appuser/dd-java-agent.jar

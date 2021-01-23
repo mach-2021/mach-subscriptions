@@ -58,5 +58,17 @@ steps:
       - '-c'
       - |
         docker push gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION)
+  - id: 'Deploy image'
+    name: 'gcr.io/${PROJECT_ID}/kustomize'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud container clusters get-credentials ${_CLOUDSDK_CONTAINER_CLUSTER} --zone ${_CLOUDSDK_COMPUTE_ZONE} --project ${_PROJECT_ID}
+        cd k8s/overlays/${_ENV_NAMESPACE}
+        kustomize edit set image gcr.io/project_id_stub/subscriptions=gcr.io/${PROJECT_ID}/subscriptions:$(cat /workspace/IMAGE_VERSION)
+        kustomize edit add annotation kubernetes.io/change-cause:"deploying $(cat /workspace/IMAGE_VERSION)"
+        kustomize build | kubectl -n ${_ENV_NAMESPACE} apply -f -
+        kubectl -n ${_ENV_NAMESPACE} rollout status deployment subscriptions
 options:
   machineType: 'N1_HIGHCPU_8'

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriptions
+  labels:
+    app: subscriptions
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 33%
+  template:
+    spec:
+      containers:
+        - name: subscriptions
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "750m"
+            requests:
+              memory: "100M"
+              cpu: "200m"
+          env:
+            - name: "DD_ENV"
+              value: poetic-now-263312
