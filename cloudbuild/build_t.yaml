@@ -5,11 +5,11 @@ steps:
     args:
       - '-c'
       - |
-        git clone -b $BRANCH_NAME git@github.com:dawn-foods-digital/$REPO_NAME
+        git clone -b $BRANCH_NAME git@github.com:mach-2021/$REPO_NAME
         cd $REPO_NAME
         git submodule init
         git submodule update
-        echo $(date +"%Y.%m.%d").$(git rev-list --count $BRANCH_NAME).$(git log --oneline -1 | awk -F/ '{ if ($2=="") print "master"; else print $2;}') > /workspace/IMAGE_VERSION
+        echo $(date +"%Y.%m.%d").$(git rev-list --count $BRANCH_NAME).$(git log --oneline -1 | awk -F/ '{ if ($2=="") print "main"; else print $2;}') > /workspace/IMAGE_VERSION
         cat /workspace/IMAGE_VERSION
   - id: 'Build image'
     name: 'gcr.io/cloud-builders/docker'

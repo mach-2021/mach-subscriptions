@@ -1,6 +1,6 @@
 FROM gradle:6.7.0-jdk11 as builder
 WORKDIR /home/gradle/project
-COPY mach-subscriptions/. .
+COPY . .
 RUN gradle --parallel --build-cache --no-daemon bootJar
 
 FROM azul/zulu-openjdk-alpine:11
