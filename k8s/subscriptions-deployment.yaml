@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: subscriptions
-          image: gcr.io/poetic-now-263312/subscriptions:2021.01.24.13.main
+          image: gcr.io/mach-2021/subscriptions:2021.01.24.13.main
           command: [ "java",
                      "-XX:MaxRAMPercentage=60", "-XX:+AlwaysActAsServerClassMachine",
                      "-jar", "app.jar" ]
@@ -65,6 +65,11 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: status.hostIP
+            - name: SPRING_CLOUD_GCP_CREDENTIAL_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map
+                  key: springCloudGcpCredentialPath
           volumeMounts:
             - name: gcp-service-account-key
               mountPath: "/etc/keys"

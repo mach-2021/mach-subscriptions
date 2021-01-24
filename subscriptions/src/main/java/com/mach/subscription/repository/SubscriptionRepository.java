@@ -8,6 +8,7 @@ import io.sphere.sdk.categories.queries.CategoryQuery;
 import io.sphere.sdk.subscriptions.Subscription;
 import io.sphere.sdk.subscriptions.SubscriptionDraft;
 import io.sphere.sdk.subscriptions.commands.SubscriptionCreateCommand;
+import io.sphere.sdk.subscriptions.commands.SubscriptionDeleteCommand;
 import io.sphere.sdk.subscriptions.queries.SubscriptionByKeyGet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,10 @@ public class SubscriptionRepository {
 
     public CompletionStage<Subscription> findSubscription(String key) {
         return ctBaseRepository.executeWithThrowing(SubscriptionByKeyGet.of(key));
+    }
+
+    public CompletionStage<Subscription> deleteSubscription(Subscription key) {
+        return ctBaseRepository.executeWithThrowing(SubscriptionDeleteCommand.of(key));
     }
 
     public Category findCategoryById(String id) {

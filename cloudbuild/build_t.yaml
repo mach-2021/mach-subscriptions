@@ -1,7 +1,7 @@
 steps:
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
-    args: [ '-c', 'gcloud secrets versions access latest --secret=secret-name > /root/.ssh/version1key' ]
+    args: [ '-c', 'gcloud secrets versions access latest --secret=subscriptions-secret > /root/.ssh/subscriptions_key' ]
     volumes:
       - name: 'ssh'
         path: /root/.ssh
@@ -12,10 +12,10 @@ steps:
     args:
       - '-c'
       - |
-        chmod 600 /root/.ssh/version1key
+        chmod 600 /root/.ssh/subscriptions_key
         cat <<EOF >/root/.ssh/config
         Hostname github.com
-        IdentityFile /root/.ssh/version1key
+        IdentityFile /root/.ssh/subscriptions_key
         EOF
         ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
     volumes:
