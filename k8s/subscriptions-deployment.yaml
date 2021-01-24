@@ -25,10 +25,9 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: subscriptions
-          image: gcr.io/project_id_stub/subscriptions:version_stub
+          image: gcr.io/poetic-now-263312/subscriptions:2021.01.23.11.main
           command: [ "java",
                      "-XX:MaxRAMPercentage=60", "-XX:+AlwaysActAsServerClassMachine",
-                     "-Djava.security.egd=file:/dev/./urandom",
                      "-jar", "app.jar" ]
           imagePullPolicy: Always
           ports:
@@ -60,10 +59,9 @@ spec:
             - name: "DD_SERVICE_NAME"
               value: subscriptions
             - name: "DD_ENV"
-              value: project-now-263312
+              value: poetic-now-263312
             - name: "DD_AGENT_HOST"
               valueFrom:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: status.hostIP
-

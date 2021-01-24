@@ -10,3 +10,4 @@ RUN adduser -D appuser
 USER appuser
 WORKDIR /home/appuser
 COPY --from=builder --chown=101:101 /home/gradle/project/subscriptions/build/libs/*.jar /home/appuser/app.jar
+COPY --from=builder --chown=101:101 /home/gradle/project/subscriptions/src/main/resources/first.json /home/appuser/subscriptions/src/main/resources/first.json

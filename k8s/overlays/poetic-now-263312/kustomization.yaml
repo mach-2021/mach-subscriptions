@@ -1,6 +1,0 @@
-commonLabels:
-  app: subscriptions
-bases:
-  - ../../base
-patchesStrategicMerge:
-  - subscriptions-deployment.yaml

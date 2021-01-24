@@ -1,8 +1,10 @@
 package com.mach.subscription.consumer;
 
 import com.google.pubsub.v1.PubsubMessage;
+import com.mach.subscription.service.SubscriptionService;
 import io.sphere.sdk.json.SphereJsonUtils;
 import io.sphere.sdk.products.messages.ProductPublishedMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gcp.pubsub.support.BasicAcknowledgeablePubsubMessage;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,10 @@ import java.util.function.Consumer;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class CTProductConsumer implements Consumer<BasicAcknowledgeablePubsubMessage> {
+
+    private final SubscriptionService subscriptionService;
 
     @Override
     public void accept(BasicAcknowledgeablePubsubMessage basicAcknowledgeablePubsubMessage) {
@@ -24,6 +29,7 @@ public class CTProductConsumer implements Consumer<BasicAcknowledgeablePubsubMes
             log.info(productPublishedMessage.getType());
             if ("ProductPublished".equals(productPublishedMessage.getType())) {
                 log.info("Product projection {}", productPublishedMessage.getProductProjection());
+                subscriptionService.saveProductToAlgolia(productPublishedMessage.getProductProjection());
             }
             basicAcknowledgeablePubsubMessage.ack();
         } catch (final Exception exception) {
