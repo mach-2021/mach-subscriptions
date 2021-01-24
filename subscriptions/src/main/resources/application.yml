@@ -40,4 +40,4 @@ spring:
   cloud:
     gcp:
       credentials:
-        location: ${SPRING_CLOUD_GCP_CREDENTIAL_PATH:file:subscriptions/src/main/resources/first.json}
+        location: ${SPRING_CLOUD_GCP_CREDENTIAL_PATH:file:/etc/keys/first.json}
