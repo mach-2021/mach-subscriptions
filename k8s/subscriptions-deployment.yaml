@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: subscriptions
-          image: gcr.io/mach-2021/subscriptions:2021.01.24.13.main
+          image: gcr.io/mach-2021/subscriptions:2021.01.24.16.main
           command: [ "java",
                      "-XX:MaxRAMPercentage=60", "-XX:+AlwaysActAsServerClassMachine",
                      "-jar", "app.jar" ]

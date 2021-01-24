@@ -89,6 +89,7 @@ public class SubscriptionService {
                         .map(desc -> desc.get(defaultLocale))
                         .orElse(""))
                 .picture(image)
+                .sku(productVariant.getSku())
                 .trending(value)
                 .build();
         if (categoryId != null) {
