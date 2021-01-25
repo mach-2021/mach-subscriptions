@@ -99,6 +99,7 @@ public class SubscriptionService {
                     .findFirst()
                     .get();
             final CategoryTree tree = CategoryTree.of(categories);
+
             Category rootCategory = tree.getRootAncestor(category);
             String categoryName = rootCategory.getName().get(defaultLocale);
             searchModel.setCategory(categoryName);
